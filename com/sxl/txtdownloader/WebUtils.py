@@ -87,9 +87,3 @@ def clear_title(title):
     title = html.unescape(title)
     return title
 
-
-if __name__ == '__main__':
-    # content = get_web_contents('http://www.haxixs.com/files/article/html/37/37810/index.html', 'gbk')
-    # get_chapter_list(content, '.chapterlist a', '')
-    # get_web_contents('https://www.runoob.com/python/python-gui-tkinter.html')
-    print(get_txt_content('http://www.haxixs.com/files/article/html/70/70607/11035663.html', 'gbk', '#BookText'))

@@ -12,7 +12,7 @@ from com.sxl.txtdownloader.icon import img
 LOG_LINE_NUM = 0
 
 
-class MY_GUI():
+class MyGUI:
     def __init__(self, init_window_name):
         # 测试模块
         self.init_window_name = init_window_name
@@ -63,7 +63,7 @@ class MY_GUI():
                                             command=self.start_download)
 
         self.result_data_label = Label(self.init_window_name, text="处理结果展示：")
-        self.result_data_Text = ScrolledText(self.init_window_name, width=100, height=50)
+        self.result_data_Text = ScrolledText(self.init_window_name, width=105, height=50)
 
         # 参数
         self.txt_url_dict = {}
@@ -73,7 +73,7 @@ class MY_GUI():
         self.init_window_name.title("网站小说下载工具_v1.0")  # 窗口名
         # self.init_window_name.geometry('320x160+10+10')   #290 160为窗口大小，+10 +10 定义窗口弹出时的默认展示位置
         # self.init_window_name.geometry('1068x681+10+10')
-        self.init_window_name.geometry('1200x700+10+10')
+        self.init_window_name.geometry('1300x700+10+10')
         # self.init_window_name["bg"] = "pink"              #窗口背景色，其他背景色见：blog.csdn.net/chl0000/article/details/7657887
         # self.init_window_name.attributes("-alpha",0.9)    #虚化，值越小虚化程度越高
 
@@ -204,6 +204,9 @@ class MY_GUI():
             print(msg)
             self.print_result(msg)
             content = WebUtils.get_txt_content(url, chapter_encoding, chapter_selector)
+            if len(content.encode()) < 2000:
+                self.print_result('长度过短，跳过下载')
+                continue
             if is_merge == 'OFF':
                 txt_name = dst_path + '\\' + title + '.txt'
             WebUtils.write_to_txt(txt_name, title, content)
@@ -264,9 +267,9 @@ class MY_GUI():
 
 def gui_start():
     window = Tk()  # 实例化出一个父窗口
-    TDW_WINDOW = MY_GUI(window)
+    tdw_window = MyGUI(window)
     # 设置根窗口默认属性
-    TDW_WINDOW.set_window()
+    tdw_window.set_window()
 
     window.mainloop()  # 父窗口进入事件循环，可以理解为保持窗口运行，否则界面不展示
 
