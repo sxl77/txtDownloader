@@ -134,8 +134,8 @@ class MyGUI:
 
     # 是否合并点击事件
     def merge_click_event(self):
-        self.clear_result()
-        self.print_result(self.merge_choice_v.get())
+        # self.clear_result()
+        self.print_result('是否合并文件：' + self.merge_choice_v.get())
 
     # 测试页面内容
     def test_web_content(self):
@@ -170,7 +170,7 @@ class MyGUI:
         self.print_result('列表选择器:' + list_selector)
         chapter_url_prefix = self.chapter_url_prefix_Text.get('0.0', 'end').strip()
         self.print_result('章节url前缀:' + chapter_url_prefix)
-        self.txt_url_dict = WebUtils.get_chapter_list(list_path, list_encoding, list_selector, chapter_url_prefix)
+        self.txt_url_dict = WebUtils.get_chapter_list(list_path, list_encoding, list_selector, chapter_url_prefix, None)
         for title, url in self.txt_url_dict.items():
             msg = title + '\n' + url
             print(msg)
@@ -203,7 +203,7 @@ class MyGUI:
             msg = '开始下载：' + title + '\n' + url
             print(msg)
             self.print_result(msg)
-            content = WebUtils.get_txt_content(url, chapter_encoding, chapter_selector)
+            content = WebUtils.get_txt_content(url, chapter_encoding, chapter_selector, headers=None)
             if len(content.encode()) < 2000:
                 self.print_result('长度过短，跳过下载')
                 continue

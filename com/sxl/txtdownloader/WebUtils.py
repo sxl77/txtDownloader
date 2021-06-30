@@ -24,8 +24,11 @@ def get_test_web_contents(url, encoding, selector):
     return str(result)
 
 
-def get_chapter_list(list_path, encoding, selector, chapter_url_prefix):
-    r = requests.get(list_path)
+def get_chapter_list(list_path, encoding, selector, chapter_url_prefix, headers):
+    if headers is None:
+        r = requests.get(list_path)
+    else:
+        r = requests.get(list_path, headers=headers)
     r.encoding = encoding
     charter_list = pq(r.text)(selector)
     down_url_dict = {}
@@ -48,16 +51,19 @@ def get_complete_url(list_url, txt_url):
     return complete_url.replace('//', '/').replace(':/', '://')
 
 
-def get_txt_content(url, encoding, selector):
+def get_txt_content(url, encoding, selector, headers):
     try:
-        r = requests.get(url)
+        if headers is None:
+            r = requests.get(url)
+        else:
+            r = requests.get(url, headers=headers)
         r.encoding = encoding
         txt_content = pq(r.text)(selector).html()
         return clear_content(txt_content)
     except requests.ConnectionError:
         print('连接失败，重新连接。。。')
         time.sleep(1)
-        return get_txt_content(url, encoding, selector)
+        return get_txt_content(url, encoding, selector, headers)
 
 
 def write_to_txt(txt_path, title, content):
@@ -82,8 +88,11 @@ def clear_content(content):
 
 def clear_title(title):
     # title = re.sub('</?.+?/?>.+?</?.+?/?>|</?.+?/?>|[|?/:*]', '', title)
-    title = re.sub('</?.+?/?>|[|?/:*]', '', title)
+
+    # 去除标签
+    title = re.sub('</?.+?/?>', '', title)
+    # 去除文件名不合法字符 \ / : * ？ " < > |
+    title = re.sub('[<>|?/:*]', '', title)
     title = title.replace('\t', '').replace('\n', '')
     title = html.unescape(title)
     return title
-
