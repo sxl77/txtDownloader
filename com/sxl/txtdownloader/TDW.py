@@ -204,9 +204,9 @@ class MyGUI:
             print(msg)
             self.print_result(msg)
             content = WebUtils.get_txt_content(url, chapter_encoding, chapter_selector, headers=None)
-            if len(content.encode()) < 2000:
-                self.print_result('长度过短，跳过下载')
-                continue
+            # if len(content.encode()) < 2000:
+            #     self.print_result('长度过短，跳过下载')
+            #     continue
             if is_merge == 'OFF':
                 txt_name = dst_path + '\\' + title + '.txt'
             WebUtils.write_to_txt(txt_name, title, content)

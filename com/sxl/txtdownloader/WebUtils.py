@@ -35,10 +35,13 @@ def get_chapter_list(list_path, encoding, selector, chapter_url_prefix, headers)
     for item in charter_list.items():
         title = clear_title(item.html())
         # url_path = root_url + item.attr('href')
+        href = item.attr('href')
         if chapter_url_prefix == '':
-            url_path = get_complete_url(list_path, item.attr('href'))
+            url_path = get_complete_url(list_path, href)
         else:
-            url_path = chapter_url_prefix + item.attr('href')
+            url_path = chapter_url_prefix + href
+        if 'http://' in href or 'https://' in href:
+            url_path = href
         if title not in down_url_dict.keys():
             down_url_dict[title] = url_path
     return down_url_dict
